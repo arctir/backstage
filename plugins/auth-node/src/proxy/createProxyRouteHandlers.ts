@@ -46,6 +46,10 @@ export function createProxyAuthRouteHandlers<TResult>(
     options.profileTransform ?? authenticator.defaultProfileTransform;
   const authenticatorCtx = authenticator.initialize({ config });
 
+  const logoutCallback = authenticator.logout ? async (req: Request, res: Response): Promise<void> => {
+    authenticator.logout?.({ req, res }, await authenticatorCtx)
+  } : undefined
+
   return {
     async start(): Promise<void> {
       throw new NotImplementedError('Not implemented');
@@ -76,5 +80,8 @@ export function createProxyAuthRouteHandlers<TResult>(
 
       res.status(200).json(response);
     },
+
+    logout: logoutCallback,
+
   };
 }

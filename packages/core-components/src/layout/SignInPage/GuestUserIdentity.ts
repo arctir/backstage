@@ -18,6 +18,7 @@ import {
   IdentityApi,
   ProfileInfo,
   BackstageUserIdentity,
+  LogoutResponse,
 } from '@backstage/core-plugin-api';
 
 /**
@@ -59,5 +60,5 @@ export class GuestUserIdentity implements IdentityApi {
     return {};
   }
 
-  async signOut(): Promise<void> {}
+  async signOut(): Promise<LogoutResponse | void> { }
 }

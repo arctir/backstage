@@ -39,7 +39,10 @@ export const oauth2ProxyAuthenticator = createProxyAuthenticator({
       },
     };
   },
-  async initialize() {},
+  async initialize({ config }) {
+    const logoutRedirectUrl = config.getOptionalString('logoutRedirectUrl');
+    return { logoutRedirectUrl }
+  },
   async authenticate({ req }) {
     try {
       const authHeader = req.header(OAUTH2_PROXY_JWT_HEADER);
@@ -68,4 +71,12 @@ export const oauth2ProxyAuthenticator = createProxyAuthenticator({
       throw new AuthenticationError('Authentication failed', e);
     }
   },
+  logout({ res }, { logoutRedirectUrl }) {
+    if (logoutRedirectUrl && res) {
+      return res.status(200).json({
+        redirectUrl: logoutRedirectUrl,
+      }).send();
+    }
+    return res.status(204).send();
+  }
 });

@@ -259,6 +259,13 @@ export type ProfileInfo = {
   picture?: string;
 };
 
+export type LogoutResponse = {
+  /**
+   * The url to redirect to upon logout.
+   */
+  redirectUrl?: string;
+}
+
 /**
  * Session state values passed to subscribers of the SessionApi.
  *
@@ -289,7 +296,7 @@ export type SessionApi = {
   /**
    * Sign out from the current session. This will reload the page.
    */
-  signOut(): Promise<void>;
+  signOut(): Promise<{ redirectUrl: string } | void>;
 
   /**
    * Observe the current state of the auth session. Emits the current state on subscription.
@@ -310,10 +317,10 @@ export type SessionApi = {
  */
 export const googleAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.google',
 });
@@ -344,10 +351,10 @@ export const githubAuthApiRef: ApiRef<
  */
 export const oktaAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.okta',
 });
@@ -363,10 +370,10 @@ export const oktaAuthApiRef: ApiRef<
  */
 export const gitlabAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.gitlab',
 });
@@ -383,10 +390,10 @@ export const gitlabAuthApiRef: ApiRef<
  */
 export const microsoftAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.microsoft',
 });
@@ -398,10 +405,10 @@ export const microsoftAuthApiRef: ApiRef<
  */
 export const oneloginAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.onelogin',
 });
@@ -462,10 +469,10 @@ export const atlassianAuthApiRef: ApiRef<
  */
 export const vmwareCloudAuthApiRef: ApiRef<
   OAuthApi &
-    OpenIdConnectApi &
-    ProfileInfoApi &
-    BackstageIdentityApi &
-    SessionApi
+  OpenIdConnectApi &
+  ProfileInfoApi &
+  BackstageIdentityApi &
+  SessionApi
 > = createApiRef({
   id: 'core.auth.vmware-cloud',
 });

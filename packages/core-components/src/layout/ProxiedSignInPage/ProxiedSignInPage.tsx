@@ -44,6 +44,11 @@ export type ProxiedSignInPageProps = SignInPageProps & {
    * underlying provider
    */
   headers?: HeadersInit | (() => HeadersInit) | (() => Promise<HeadersInit>);
+
+  /**
+   * Optional url to redirect to upon logout.
+   */
+  logoutRedirectUrl?: string;
 };
 
 /**

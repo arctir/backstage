@@ -21,6 +21,7 @@ import {
   ErrorApi,
   DiscoveryApi,
   FetchApi,
+  LogoutResponse,
 } from '@backstage/core-plugin-api';
 import { startCookieAuthRefresh } from './startCookieAuthRefresh';
 
@@ -52,7 +53,7 @@ type CompatibilityIdentityApi = IdentityApi & {
 export class AppIdentityProxy implements IdentityApi {
   private target?: CompatibilityIdentityApi;
   private waitForTarget: Promise<CompatibilityIdentityApi>;
-  private resolveTarget: (api: CompatibilityIdentityApi) => void = () => {};
+  private resolveTarget: (api: CompatibilityIdentityApi) => void = () => { };
   private signOutTargetUrl = '/';
 
   #cookieAuthSignOut?: () => Promise<void>;
@@ -107,7 +108,7 @@ export class AppIdentityProxy implements IdentityApi {
       // eslint-disable-next-line no-console
       console.warn(
         `WARNING: The App IdentityApi provided an invalid userEntityRef, '${identity.userEntityRef}'. ` +
-          `It must be a full Entity Reference of the form '<kind>:<namespace>/<name>'.`,
+        `It must be a full Entity Reference of the form '<kind>:<namespace>/<name>'.`,
       );
     }
 
@@ -128,8 +129,9 @@ export class AppIdentityProxy implements IdentityApi {
     });
   }
 
-  async signOut(): Promise<void> {
-    await this.waitForTarget.then(target => target.signOut());
+  async signOut(): Promise<LogoutResponse | void> {
+    await this.waitForTarget.then(target => target.signOut()
+      .then(res => this.signOutTargetUrl = res && res.redirectUrl ? res.redirectUrl: "/"));
 
     await this.#cookieAuthSignOut?.();
 

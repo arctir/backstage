@@ -18,6 +18,7 @@ import {
   IdentityApi,
   ProfileInfo,
   BackstageUserIdentity,
+  LogoutResponse,
 } from '@backstage/core-plugin-api';
 
 function parseJwtPayload(token: string) {
@@ -29,12 +30,12 @@ type LegacySignInResult = {
   userId: string;
   profile: ProfileInfo;
   getIdToken?: () => Promise<string>;
-  signOut?: () => Promise<void>;
+  signOut?: () => Promise<{ redirectUrl: string } | void>;
 };
 
 /** @internal */
 export class LegacyUserIdentity implements IdentityApi {
-  private constructor(private readonly result: LegacySignInResult) {}
+  private constructor(private readonly result: LegacySignInResult) { }
 
   getUserId(): string {
     return this.result.userId;
@@ -81,7 +82,7 @@ export class LegacyUserIdentity implements IdentityApi {
     return { token };
   }
 
-  async signOut(): Promise<void> {
+  async signOut(): Promise<LogoutResponse | void> {
     return this.result.signOut?.();
   }
 }

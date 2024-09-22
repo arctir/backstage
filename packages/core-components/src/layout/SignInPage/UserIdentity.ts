@@ -21,6 +21,7 @@ import {
   BackstageUserIdentity,
   BackstageIdentityApi,
   SessionApi,
+  LogoutResponse,
 } from '@backstage/core-plugin-api';
 
 import { GuestUserIdentity } from './GuestUserIdentity';
@@ -70,7 +71,7 @@ export class UserIdentity implements IdentityApi {
     /**
      * Sign out handler that will be called if the user requests to sign out.
      */
-    signOut?: () => Promise<void>;
+    signOut?: () => Promise<{ redirectUrl: string } | void>;
   }): IdentityApi {
     return LegacyUserIdentity.fromResult(result);
   }
@@ -102,7 +103,7 @@ export class UserIdentity implements IdentityApi {
       BackstageIdentityApi &
       SessionApi,
     private readonly profile?: ProfileInfo,
-  ) {}
+  ) { }
 
   /** {@inheritdoc @backstage/core-plugin-api#IdentityApi.getUserId} */
   getUserId(): string {
@@ -158,7 +159,7 @@ export class UserIdentity implements IdentityApi {
   }
 
   /** {@inheritdoc @backstage/core-plugin-api#IdentityApi.signOut} */
-  async signOut(): Promise<void> {
+  async signOut(): Promise<LogoutResponse | void> {
     return this.authApi.signOut();
   }
 }
